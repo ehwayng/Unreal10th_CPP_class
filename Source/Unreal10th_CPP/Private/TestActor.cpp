@@ -6,15 +6,17 @@
 // Sets default values
 ATestActor::ATestActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+ 	// Set this actor to call Tick() every frame.  
+	// You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
 
+	//Data1 = 20;
 }
 
 // Called when the game starts or when spawned
 void ATestActor::BeginPlay()
 {
-	Super::BeginPlay();
+	Super::BeginPlay();	// Super = 부모 클래스
 	
 }
 
