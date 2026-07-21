@@ -37,6 +37,8 @@ void ATestActor::BeginPlay()
 
 	Test_ImplementableFunction();
 	Test_NativeEventFunction();
+
+	
 }
 
 // Called every frame
