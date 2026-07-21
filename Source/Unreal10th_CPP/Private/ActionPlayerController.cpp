@@ -3,6 +3,7 @@
 
 #include "ActionPlayerController.h"
 #include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 
 void AActionPlayerController::BeginPlay()
@@ -17,4 +18,14 @@ void AActionPlayerController::BeginPlay()
 		SubSystem->AddMappingContext(DefaultMappingContext, GameInputPriority);
 	}
 
+}
+
+void AActionPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+		
+	if (UEnhancedInputComponent* Enhanced = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+
+	}
 }

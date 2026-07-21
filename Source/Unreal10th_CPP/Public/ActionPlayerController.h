@@ -7,6 +7,7 @@
 #include "ActionPlayerController.generated.h"
 
 class UInputMappingContext;
+class UInputAction;
 /**
  * 
  */
@@ -17,10 +18,14 @@ class UNREAL10TH_CPP_API AActionPlayerController : public APlayerController
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UInputMappingContext> DefaultMappingContext = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UInputAction> IA_Look = nullptr;
 
 private:
 	// 입력 우선 순위
