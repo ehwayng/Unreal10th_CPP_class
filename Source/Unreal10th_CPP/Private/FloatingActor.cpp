@@ -31,13 +31,13 @@ void AFloatingActor::BeginPlay()
 void AFloatingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UpdateFloatingMesh(DeltaTime);
+	ElapsedTime += DeltaTime;
+
+	UpdateFloatingMesh();
 }
 
-void AFloatingActor::UpdateFloatingMesh(float InDeltaTime)
-{
-	ElapsedTime += InDeltaTime;
-		
+void AFloatingActor::UpdateFloatingMesh()
+{		
 	float InCos = ElapsedTime * UE_PI * 2 / Duration;
 	float CosValue = FMath::Cos(InCos);			// 1 -> 0 -> -1 -> 0 -> 1 -> ...
 	CosValue += 1;								// 2 -> 1 -> 0 -> 1 -> 2 -> ...

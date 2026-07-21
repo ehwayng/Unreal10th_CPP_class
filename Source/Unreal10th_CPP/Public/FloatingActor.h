@@ -23,8 +23,12 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	// 메시의 움직임을 결정할 함수
-	virtual void UpdateFloatingMesh(float InDeltaTime);
+	virtual void UpdateFloatingMesh();
 
+	// 누적시간 확인용 함수
+	inline float GetElapsedTime() const { return ElapsedTime; }
+	// 높이 오프셋 확인용 함수
+	inline float GetHeightOffset() const { return HeightOffset; }
 protected:
 	// 위아래 왕복에 걸리는 시간
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -34,10 +38,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MoveHeight = 300.0f;
 
+private:
 	// 누적 시간
 	float ElapsedTime = 0.0f;
 
-private:
 	// 메시의 높이 오프셋
 	float HeightOffset = 0.0f;
 
