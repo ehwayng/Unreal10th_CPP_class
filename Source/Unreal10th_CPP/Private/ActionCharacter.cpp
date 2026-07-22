@@ -71,6 +71,27 @@ void AActionCharacter::BeginPlay()
 void AActionCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (IsSprinting)
+	{
+		StaminaSavingTime = 0.f;
+		if (!ConsumeStamina_Implementation(5.0f * DeltaTime))
+		{
+			OnSprintEnd();
+			UE_LOG(LogTemp, Log, TEXT("스태미너 소진. 걷기로 전환."));
+		}
+	}
+
+	if (!IsSprinting && !AnimInstance->IsAnyMontagePlaying())
+	{
+		StaminaSavingTime += DeltaTime;
+		
+		if (StaminaSavingTime >= 3.0f)
+		{
+			RecoveryStamina_Implementation(15.0f * DeltaTime);
+			UE_LOG(LogTemp, Log, TEXT("스태미너를 회복합니다..."));
+		}
+	}
 
 }
 
@@ -130,7 +151,7 @@ void AActionCharacter::OnRollAction(const FInputActionValue& Value)
 {
 	//UE_LOG(LogTemp, Log, TEXT("OnRollAction"));
 	if (!RollMontage.IsValid()) return;
-	
+
 	if (!AnimInstance)
 	{
 		AnimInstance = GetMesh()->GetAnimInstance();
@@ -143,17 +164,36 @@ void AActionCharacter::OnRollAction(const FInputActionValue& Value)
 			SetActorRotation(GetLastMovementInputVector().Rotation());	// 입력방향으로 즉시 회전해서 구르기
 		}
 
-		PlayAnimMontage(RollMontage.Get());
+		if (CurrentStamina >= 30)
+		{
+			PlayAnimMontage(RollMontage.Get());
+			ConsumeStamina_Implementation(30.0f);
+			StaminaSavingTime = 0.f;
+		}
+		else
+			UE_LOG(LogTemp, Log, TEXT("스태미너 부족. 구를 수 없음. 현재 Stamina : %.1f"), CurrentStamina)
 	}
 }
 
 void AActionCharacter::OnSprintStart()
 {
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (CurrentStamina > 0)
+	{
+		IsSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+		StaminaSavingTime = 0.f;
+	}
+	else
+	{
+		IsSprinting = false;
+		OnSprintEnd();
+		UE_LOG(LogTemp, Log, TEXT("스태미너 부족. 달릴 수 없음."));
+	}
 }
 
 void AActionCharacter::OnSprintEnd()
 {
+	IsSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 

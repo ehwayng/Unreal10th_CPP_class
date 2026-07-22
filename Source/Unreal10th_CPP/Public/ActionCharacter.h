@@ -65,10 +65,16 @@ protected:
 	float WalkSpeed = 600;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsSprinting = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CurrentStamina = 100.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxStamina = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float StaminaSavingTime = 0.f;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
